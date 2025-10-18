@@ -113,8 +113,8 @@
 <body>
 
   <!-- 🎬 VIDEO BACKGROUND -->
-  <video id="bgVideo" autoplay muted loop playsinline></video>
-  <video id="lastVideo" autoplay muted loop playsinline></video>
+  <video id="bgVideo" autoplay muted loop playsinline preload="auto"></video>
+  <video id="lastVideo" autoplay muted loop playsinline preload="auto"></video>
 
   <!-- 🔐 SLIDE 1 - LOGIN -->
   <div id="loginPage"
@@ -138,7 +138,7 @@
 
     <!-- Pesan error login -->
     <p id="errorMsg" class="hidden text-red-400 mt-3 text-sm animate__animated animate__fadeIn">
-      Tanggal dan bulan salah 
+      Tanggal dan bulan salah
     </p>
 
     <p class="text-white mt-3 text-sm">Silahkan masukan tanggal dan bulan</p>
@@ -148,7 +148,7 @@
   <!-- 🎉 SLIDE 2 - HALAMAN AWAL -->
   <div id="mainPage" class="hidden flex flex-col items-center text-center text-white animate__animated m-8 w-80">
     <div id="birthdayBox" class="glass px-10 py-8 rounded-xl text-center animate__animated animate__fadeInDown">
-      <h1 class="text-3xl font-bold text-center">Happy Birthday 🎂</h1>
+      <h1 class="text-3xl font-bold text-center">Happy Birthday</h1>
       <h2 class="text-2xl font-semibold glow animate__animated animate__pulse animate__infinite">– Aulia Ramadhani –
       </h2>
       <button id="nextBtn1"
@@ -388,22 +388,29 @@
         themeBtn.textContent = name + " ▼";
         themeList.classList.add('hidden');
         bgVideo.src = file;
-        bgVideo.play();
+        bgVideo.load();
+        bgVideo.oncanplaythrough = () => bgVideo.play();
       };
+
     });
     window.addEventListener('click', e => { if (!e.target.closest('.dropdown')) themeList.classList.add('hidden'); });
   </script>
   <script>
-fetch("https://getform.io/f/bqoezplb", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    message: "Seseorang baru membuka halaman kamu 🎉",
-    time: new Date().toLocaleString(),
-    userAgent: navigator.userAgent
-  })
-});
-</script>
+    fetch("https://getform.io/f/bqoezplb", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: "Seseorang baru membuka halaman kamu 🎉",
+        time: new Date().toLocaleString(),
+        userAgent: navigator.userAgent
+      })
+    });
+  </script>
+  <video preload="auto" muted loop playsinline style="display:none">
+    <source src="warrior.mp4" type="video/mp4">
+    <source src="minecraft.mp4" type="video/mp4">
+    <source src="genshin.mp4" type="video/mp4">
+  </video>
 
 </body>
 
