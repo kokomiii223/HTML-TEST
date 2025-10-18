@@ -11,7 +11,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
-  <style>
+  <link rel="preload" as="video" href="warrior.mp4" type="video/mp4">
+<link rel="preload" as="video" href="minecraft.mp4" type="video/mp4">
+<link rel="preload" as="video" href="genshin.mp4" type="video/mp4">
+<link rel="preload" as="video" href="bg last.mp4" type="video/mp4">
+<style>
     body {
       background-image: url('https://i.pinimg.com/1200x/b4/fe/42/b4fe428c83502f66bbd2af43ae20b1dc.jpg');
       background-size: cover;
@@ -107,7 +111,10 @@
       text-shadow: 0 0 20px rgba(255, 105, 180, 0.8),
         0 0 40px rgba(255, 192, 203, 0.8);
     }
-  </style>
+  #slide5 h2, #slide5 p {
+  text-shadow: none !important;
+}
+</style>
 </head>
 
 <body>
@@ -388,8 +395,7 @@
         themeBtn.textContent = name + " ▼";
         themeList.classList.add('hidden');
         bgVideo.src = file;
-        bgVideo.load();
-        bgVideo.oncanplaythrough = () => bgVideo.play();
+        bgVideo.play();
       };
 
     });
