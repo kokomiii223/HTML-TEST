@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aulia Birthday</title>
+
+  <!-- Tailwind + AnimateCSS + Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      background-image: url('https://i.pinimg.com/1200x/b4/fe/42/b4fe428c83502f66bbd2af43ae20b1dc.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    video#bgVideo,
+    video#lastVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      display: none;
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .glow {
+      text-shadow: 0 0 10px rgba(255, 182, 193, 0.7),
+        0 0 20px rgba(255, 182, 193, 0.6),
+        0 0 30px rgba(255, 192, 203, 0.4);
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-btn {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      min-width: 140px;
+    }
+
+    .dropdown-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .dropdown-list {
+      position: absolute;
+      top: 110%;
+      right: 0;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 100;
+      min-width: 140px;
+    }
+
+    .dropdown-item {
+      color: white;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: left;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Slide terakhir - teks besar */
+    #slide5 h1 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: white;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(255, 105, 180, 0.8),
+        0 0 40px rgba(255, 192, 203, 0.8);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 🎬 VIDEO BACKGROUND -->
+  <video id="bgVideo" autoplay muted loop playsinline></video>
+  <video id="lastVideo" autoplay muted loop playsinline></video>
+
+  <!-- 🔐 SLIDE 1 - LOGIN -->
+  <div id="loginPage"
+    class="bg-white/20 backdrop-blur-md border border-white/40 px-10 py-6 rounded-2xl shadow-lg text-center animate__animated animate__fadeIn m-8 w-80">
+    <h1 class="text-3xl font-bold text-white mb-4">Login</h1>
+
+    <div class="relative mb-3">
+      <button id="tanggalBtn" class="glass text-white w-full py-2 rounded-lg text-center">Tanggal</button>
+      <div id="tanggalList" class="absolute hidden mt-1 w-full max-h-40 overflow-y-auto glass rounded-lg z-10"></div>
+    </div>
+
+    <div class="relative mb-3">
+      <button id="bulanBtn" class="glass text-white w-full py-2 rounded-lg text-center">Bulan</button>
+      <div id="bulanList" class="absolute hidden mt-1 w-full max-h-40 overflow-y-auto glass rounded-lg z-10"></div>
+    </div>
+
+    <button onclick="cekLogin()"
+      class="bg-white text-black font-semibold px-4 py-2 w-full rounded-lg hover:bg-gray-300 transition">
+      Login
+    </button>
+
+    <!-- Pesan error login -->
+    <p id="errorMsg" class="hidden text-red-400 mt-3 text-sm animate__animated animate__fadeIn">
+      Tanggal dan bulan salah 
+    </p>
+
+    <p class="text-white mt-3 text-sm">Silahkan masukan tanggal dan bulan</p>
+
+  </div>
+
+  <!-- 🎉 SLIDE 2 - HALAMAN AWAL -->
+  <div id="mainPage" class="hidden flex flex-col items-center text-center text-white animate__animated m-8 w-80">
+    <div id="birthdayBox" class="glass px-10 py-8 rounded-xl text-center animate__animated animate__fadeInDown">
+      <h1 class="text-3xl font-bold text-center">Happy Birthday 🎂</h1>
+      <h2 class="text-2xl font-semibold glow animate__animated animate__pulse animate__infinite">– Aulia Ramadhani –
+      </h2>
+      <button id="nextBtn1"
+        class="bg-white text-black font-semibold px-6 py-2 mt-5 rounded-lg hover:bg-gray-300 transition w-full animate__animated animate__delay-1s animate__tada">
+        Slide Selanjutnya
+      </button>
+    </div>
+  </div>
+
+  <!-- 💌 SLIDE 3 -->
+  <div id="slide3" class="hidden flex flex-col items-center text-center text-white animate__animated m-8 w-80">
+    <div class="glass px-10 py-10 rounded-xl animate__animated animate__fadeInDown">
+      <h2 class="text-2xl font-bold mb-3">- Ucapan Spesial -</h2>
+      <p class="text-lg leading-relaxed mb-5">
+        Halo seng! pa kabar lama tak jumpa hehe btw happy birthday yahh, ga kerasa udah 20 thn aja nichh.
+        Semoga ditahun-tahun yang akan datang masih diberi kesehatan, kemudahan dan kelancaran
+        buat jalanin kulyeahnya terutama LAAPRAKK stay strong yahh hehe :D
+      </p>
+      <button id="nextBtn2"
+        class="bg-white text-black font-semibold px-6 py-2 rounded-lg hover:bg-gray-300 transition w-full animate__animated animate__tada">
+        Next ➤
+      </button>
+    </div>
+  </div>
+
+  <!-- 💖 SLIDE 4 -->
+  <div id="slide4" class="hidden flex flex-col items-center text-center text-white animate__animated m-8 w-80">
+    <div class="glass px-10 py-10 rounded-xl animate__animated animate__fadeInDown">
+      <h2 class="text-2xl font-bold mb-3">- Pesan Terakhir -</h2>
+      <p class="text-lg leading-relaxed mb-5">
+        Semoga semua harapanmu di umur 20 ini bisa tercapai satu-satu yaa,
+        jangan lupa bahagia dan jaga diri baik baik yahh sengg..<br>
+        udah kepala 2 aja ga kerasa, yahh begitulah hidup Wish u all the best. <br>
+        btw ini aku bikin sendiri jadi kalo ada bug sama error maafin yahh..
+        <br><br>— Dari HansKhoo —
+      </p>
+      <button id="nextBtn3"
+        class="bg-white text-black font-semibold px-6 py-2 rounded-lg hover:bg-gray-300 transition w-full animate__animated animate__tada">
+        Next ➤
+      </button>
+    </div>
+  </div>
+
+  <!-- 🌈 SLIDE 5 - PENUTUP -->
+  <div id="slide5"
+    class="hidden fixed inset-0 flex flex-col justify-center items-center text-center text-white animate__animated animate__fadeIn">
+
+    <div class="glass px-8 py-6 rounded-3xl shadow-2xl animate__animated animate__zoomIn animate__delay-1s">
+      <h2 class="text-4xl font-extrabold mb-2 text-white">Terimakasihh</h2>
+
+      <div class="space-y-1 text-base leading-tight">
+        <p>...</p>
+        <p>last but not least</p>
+        <p>See you on the next chapter</p>
+      </div>
+
+      <button id="replayBtn"
+        class="mt-5 bg-white text-black font-semibold px-6 py-2 rounded-lg hover:bg-gray-300 transition animate__animated animate__pulse animate__infinite">
+        Ulang Lagi
+      </button>
+    </div>
+  </div>
+
+
+
+
+  <!-- 🎨 THEME SELECTOR -->
+  <div id="themeSelector" class="hidden fixed top-5 right-5 animate__animated animate__fadeInRight">
+    <div class="dropdown">
+      <button id="themeBtn" class="dropdown-btn">Genshin ▼</button>
+      <div id="themeList" class="dropdown-list hidden">
+        <div class="dropdown-item" data-value="warrior.mp4">Warrior</div>
+        <div class="dropdown-item" data-value="minecraft.mp4">Minecraft</div>
+        <div class="dropdown-item" data-value="genshin.mp4">Genshin</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 💬 POPUP -->
+  <div id="popupNotif"
+    class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 glass text-white p-6 rounded-2xl shadow-xl text-center animate__animated z-50 w-80">
+    <p class="text-lg mb-3">✨ Login berhasil! ✨</p>
+    <h1 class="text-lg mb-3">Bisa ganti tema di pojok kanan atas yaa 💫</h1>
+    <button id="closePopup" class="bg-white text-black font-semibold px-4 py-1 rounded-lg hover:bg-gray-300 transition">
+      Tutup
+    </button>
+  </div>
+
+  <script>
+    // === DROPDOWN LOGIN ===
+    const tanggalBtn = document.getElementById('tanggalBtn');
+    const tanggalList = document.getElementById('tanggalList');
+    const bulanBtn = document.getElementById('bulanBtn');
+    const bulanList = document.getElementById('bulanList');
+    const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+    for (let i = 1; i <= 31; i++) {
+      const div = document.createElement('div');
+      div.textContent = i;
+      div.className = "py-1 hover:bg-white/20 cursor-pointer";
+      div.onclick = () => { tanggalBtn.textContent = i; tanggalList.classList.add('hidden'); };
+      tanggalList.appendChild(div);
+    }
+    bulan.forEach(b => {
+      const div = document.createElement('div');
+      div.textContent = b;
+      div.className = "py-1 hover:bg-white/20 cursor-pointer";
+      div.onclick = () => { bulanBtn.textContent = b; bulanList.classList.add('hidden'); };
+      bulanList.appendChild(div);
+    });
+    tanggalBtn.onclick = () => tanggalList.classList.toggle('hidden');
+    bulanBtn.onclick = () => bulanList.classList.toggle('hidden');
+    window.onclick = e => {
+      if (!e.target.matches('#tanggalBtn')) tanggalList.classList.add('hidden');
+      if (!e.target.matches('#bulanBtn')) bulanList.classList.add('hidden');
+    };
+
+    // === LOGIN ===
+    function cekLogin() {
+      const tgl = parseInt(tanggalBtn.textContent);
+      const bln = bulanBtn.textContent;
+      if (tgl === 21 && bln === "Oktober") {
+        document.getElementById("loginPage").classList.add("hidden");
+        const mainPage = document.getElementById("mainPage");
+        const themeSelector = document.getElementById("themeSelector");
+        const bgVideo = document.getElementById("bgVideo");
+        const popup = document.getElementById("popupNotif");
+
+        mainPage.classList.remove("hidden");
+        bgVideo.style.display = "block";
+        bgVideo.src = "warrior.mp4";
+        bgVideo.play();
+        themeSelector.classList.remove("hidden");
+
+        setTimeout(() => {
+          popup.classList.remove("hidden");
+          popup.classList.add("animate__fadeIn");
+        }, 2000);
+
+        document.getElementById("closePopup").onclick = () => {
+          popup.classList.add("animate__fadeOut");
+          setTimeout(() => popup.classList.add("hidden"), 500);
+        };
+        showConfetti();
+      } else {
+        const errorMsg = document.getElementById("errorMsg");
+        errorMsg.classList.remove("hidden");
+        errorMsg.classList.add("animate__fadeIn");
+
+        // sembunyikan otomatis setelah 2.5 detik
+        setTimeout(() => {
+          errorMsg.classList.add("hidden");
+        }, 2500);
+      }
+
+    }
+
+    // === CONFETTI ===
+    function showConfetti() {
+      const defaults = { spread: 360, ticks: 50, gravity: 0, decay: 0.94, startVelocity: 30, shapes: ["star"], colors: ["#FFE400", "#FFBD00", "#E89400", "#FFCA6C", "#FDFFB8"] };
+      function shoot() {
+        confetti({ ...defaults, particleCount: 40, scalar: 1.2, shapes: ["star"] });
+        confetti({ ...defaults, particleCount: 10, scalar: 0.75, shapes: ["circle"] });
+      }
+      setTimeout(shoot, 0);
+      setTimeout(shoot, 100);
+      setTimeout(shoot, 200);
+    }
+
+    // === SLIDE NAVIGATION ===
+    document.getElementById('nextBtn1').onclick = () => {
+      document.getElementById("mainPage").classList.add("hidden");
+      document.getElementById("slide3").classList.remove("hidden");
+    };
+    document.getElementById('nextBtn2').onclick = () => {
+      document.getElementById("slide3").classList.add("hidden");
+      document.getElementById("slide4").classList.remove("hidden");
+    };
+    document.getElementById('nextBtn3').onclick = () => {
+      document.getElementById("slide4").classList.add("hidden");
+      const lastVideo = document.getElementById("lastVideo");
+      lastVideo.src = "bg last.mp4";
+      lastVideo.style.display = "block";
+      lastVideo.play();
+      document.getElementById("slide5").classList.remove("hidden");
+    };
+    document.getElementById('nextBtn3').onclick = () => {
+      document.getElementById("slide4").classList.add("hidden");
+      const lastVideo = document.getElementById("lastVideo");
+      lastVideo.src = "bg last.mp4";
+      lastVideo.style.display = "block";
+      lastVideo.play();
+
+      const slide5 = document.getElementById("slide5");
+      slide5.classList.remove("hidden");
+      slide5.classList.add("animate__fadeInUp");
+
+      // confetti efek penutup
+      let duration = 2 * 1000;
+      let animationEnd = Date.now() + duration;
+      (function frame() {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ["#ffb6c1", "#ffc0cb", "#ffe4e1"]
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ["#ffb6c1", "#ffc0cb", "#ffe4e1"]
+        });
+        if (Date.now() < animationEnd) requestAnimationFrame(frame);
+      })();
+    };
+
+    // tombol replay ulang dari awal
+    document.getElementById('replayBtn').onclick = () => {
+      document.getElementById("slide5").classList.add("hidden");
+      document.getElementById("lastVideo").style.display = "none";
+      document.getElementById("loginPage").classList.remove("hidden");
+      document.getElementById("bgVideo").pause();
+    };
+
+    // === THEME SELECTOR ===
+    const themeBtn = document.getElementById('themeBtn');
+    const themeList = document.getElementById('themeList');
+    const bgVideo = document.getElementById('bgVideo');
+    themeBtn.onclick = () => themeList.classList.toggle('hidden');
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+      item.onclick = () => {
+        const name = item.textContent;
+        const file = item.getAttribute('data-value');
+        themeBtn.textContent = name + " ▼";
+        themeList.classList.add('hidden');
+        bgVideo.src = file;
+        bgVideo.play();
+      };
+    });
+    window.addEventListener('click', e => { if (!e.target.closest('.dropdown')) themeList.classList.add('hidden'); });
+  </script>
+  <script>
+fetch("https://getform.io/f/bqoezplb", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    message: "Seseorang baru membuka halaman kamu 🎉",
+    time: new Date().toLocaleString(),
+    userAgent: navigator.userAgent
+  })
+});
+</script>
+
+</body>
+
+</html>
