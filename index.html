@@ -158,7 +158,7 @@
 
 <body>
   <!-- 🔊 Volume Control -->
- <div id="volumeControl" class="hidden animate__animated animate__fadeInLeft">
+  <div id="volumeControl" class="hidden animate__animated animate__fadeInLeft">
     <button id="volumeButton">🔊</button>
     <input id="volumeSlider" type="range" min="0" max="1" step="0.01" value="0.5" class="hidden">
   </div>
@@ -352,6 +352,20 @@
         // 🌈 Background default
         document.body.style.backgroundImage = "url('https://i.pinimg.com/originals/9d/bd/9e/9dbd9e807e4d498b454d120c82086f43.gif')";
         document.body.style.backgroundSize = "cover";
+
+        // 🎵 Mulai musik setelah login berhasil
+        try {
+          bgMusic.muted = true; // mulai dalam keadaan mute dulu (agar lolos blokir)
+          bgMusic.play().then(() => {
+            setTimeout(() => {
+              bgMusic.muted = false; // unmute setelah beberapa detik
+              bgMusic.volume = 0.5;
+            }, 500);
+          });
+        } catch (err) {
+          console.log("Autoplay blocked:", err);
+        }
+
 
         // 🎉 Popup notif login
         const popup = document.getElementById("popupNotif");
