@@ -484,18 +484,19 @@
     window.addEventListener('click', e => { if (!e.target.closest('.dropdown')) themeList.classList.add('hidden'); });
   </script>
 <script defer>
+const formData = new FormData();
+formData.append("message", "Seseorang baru membuka halaman kamu 🎉");
+formData.append("time", new Date().toLocaleString());
+formData.append("userAgent", navigator.userAgent);
+
 fetch("https://getform.io/f/bdrdpoob", {
   method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    message: "Seseorang baru membuka halaman kamu 🎉",
-    time: new Date().toLocaleString(),
-    userAgent: navigator.userAgent
-  })
+  body: formData
 })
-  .then(() => console.log("Log pengunjung terkirim ke Getform ✅"))
-  .catch(err => console.warn("Gagal mengirim ke Getform ❌", err));
+  .then(() => console.log("✅ Log pengunjung terkirim ke Getform"))
+  .catch(err => console.warn("❌ Gagal kirim ke Getform:", err));
 </script>
+
 
 </body>
 
