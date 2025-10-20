@@ -245,162 +245,162 @@
   </div>
 
   <script>
-    // === DROPDOWN LOGIN ===
-    const tanggalBtn = document.getElementById('tanggalBtn');
-    const tanggalList = document.getElementById('tanggalList');
-    const bulanBtn = document.getElementById('bulanBtn');
-    const bulanList = document.getElementById('bulanList');
-    const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+  // === DROPDOWN LOGIN ===
+  const tanggalBtn = document.getElementById('tanggalBtn');
+  const tanggalList = document.getElementById('tanggalList');
+  const bulanBtn = document.getElementById('bulanBtn');
+  const bulanList = document.getElementById('bulanList');
+  const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-    for (let i = 1; i <= 31; i++) {
-      const div = document.createElement('div');
-      div.textContent = i;
-      div.className = "py-1 hover:bg-white/20 cursor-pointer";
-      div.onclick = () => { tanggalBtn.textContent = i; tanggalList.classList.add('hidden'); };
-      tanggalList.appendChild(div);
-    }
-    bulan.forEach(b => {
-      const div = document.createElement('div');
-      div.textContent = b;
-      div.className = "py-1 hover:bg-white/20 cursor-pointer";
-      div.onclick = () => { bulanBtn.textContent = b; bulanList.classList.add('hidden'); };
-      bulanList.appendChild(div);
-    });
-    tanggalBtn.onclick = () => tanggalList.classList.toggle('hidden');
-    bulanBtn.onclick = () => bulanList.classList.toggle('hidden');
-    window.onclick = e => {
-      if (!e.target.matches('#tanggalBtn')) tanggalList.classList.add('hidden');
-      if (!e.target.matches('#bulanBtn')) bulanList.classList.add('hidden');
-    };
+  for (let i = 1; i <= 31; i++) {
+    const div = document.createElement('div');
+    div.textContent = i;
+    div.className = "py-1 hover:bg-white/20 cursor-pointer";
+    div.onclick = () => { tanggalBtn.textContent = i; tanggalList.classList.add('hidden'); };
+    tanggalList.appendChild(div);
+  }
+  bulan.forEach(b => {
+    const div = document.createElement('div');
+    div.textContent = b;
+    div.className = "py-1 hover:bg-white/20 cursor-pointer";
+    div.onclick = () => { bulanBtn.textContent = b; bulanList.classList.add('hidden'); };
+    bulanList.appendChild(div);
+  });
+  tanggalBtn.onclick = () => tanggalList.classList.toggle('hidden');
+  bulanBtn.onclick = () => bulanList.classList.toggle('hidden');
+  window.onclick = e => {
+    if (!e.target.matches('#tanggalBtn')) tanggalList.classList.add('hidden');
+    if (!e.target.matches('#bulanBtn')) bulanList.classList.add('hidden');
+  };
 
-    // === LOGIN ===
-    function cekLogin() {
-      const tgl = parseInt(tanggalBtn.textContent);
-      const bln = bulanBtn.textContent;
-      if (tgl === 21 && bln === "Oktober") {
-        document.getElementById("loginPage").classList.add("hidden");
-        const mainPage = document.getElementById("mainPage");
-        const themeSelector = document.getElementById("themeSelector");
-        const bgVideo = document.getElementById("bgVideo");
-        const popup = document.getElementById("popupNotif");
+  // === LOGIN ===
+  function cekLogin() {
+    const tgl = parseInt(tanggalBtn.textContent);
+    const bln = bulanBtn.textContent;
+    if (tgl === 21 && bln === "Oktober") {
+      document.getElementById("loginPage").classList.add("hidden");
+      const mainPage = document.getElementById("mainPage");
+      const themeSelector = document.getElementById("themeSelector");
+      const popup = document.getElementById("popupNotif");
 
-        mainPage.classList.remove("hidden");
-        bgVideo.style.display = "block";
-        bgVideo.src = "warrior.mp4";
-        bgVideo.play();
-        themeSelector.classList.remove("hidden");
+      mainPage.classList.remove("hidden");
+      themeSelector.classList.remove("hidden");
 
-        setTimeout(() => {
-          popup.classList.remove("hidden");
-          popup.classList.add("animate__fadeIn");
-        }, 2000);
+      // 🌈 Default background: Warrior GIF
+      document.body.style.backgroundImage = "url('https://i.pinimg.com/originals/9d/bd/9e/9dbd9e807e4d498b454d120c82086f43.gif')";
+      document.body.style.backgroundSize = "cover";
+      document.body.style.backgroundPosition = "center";
 
-        document.getElementById("closePopup").onclick = () => {
-          popup.classList.add("animate__fadeOut");
-          setTimeout(() => popup.classList.add("hidden"), 500);
-        };
-        showConfetti();
-      } else {
-        const errorMsg = document.getElementById("errorMsg");
-        errorMsg.classList.remove("hidden");
-        errorMsg.classList.add("animate__fadeIn");
+      setTimeout(() => {
+        popup.classList.remove("hidden");
+        popup.classList.add("animate__fadeIn");
+      }, 2000);
 
-        // sembunyikan otomatis setelah 2.5 detik
-        setTimeout(() => {
-          errorMsg.classList.add("hidden");
-        }, 2500);
-      }
-
-    }
-
-    // === CONFETTI ===
-    function showConfetti() {
-      const defaults = { spread: 360, ticks: 50, gravity: 0, decay: 0.94, startVelocity: 30, shapes: ["star"], colors: ["#FFE400", "#FFBD00", "#E89400", "#FFCA6C", "#FDFFB8"] };
-      function shoot() {
-        confetti({ ...defaults, particleCount: 40, scalar: 1.2, shapes: ["star"] });
-        confetti({ ...defaults, particleCount: 10, scalar: 0.75, shapes: ["circle"] });
-      }
-      setTimeout(shoot, 0);
-      setTimeout(shoot, 100);
-      setTimeout(shoot, 200);
-    }
-
-    // === SLIDE NAVIGATION ===
-    document.getElementById('nextBtn1').onclick = () => {
-      document.getElementById("mainPage").classList.add("hidden");
-      document.getElementById("slide3").classList.remove("hidden");
-    };
-    document.getElementById('nextBtn2').onclick = () => {
-      document.getElementById("slide3").classList.add("hidden");
-      document.getElementById("slide4").classList.remove("hidden");
-    };
-    document.getElementById('nextBtn3').onclick = () => {
-      document.getElementById("slide4").classList.add("hidden");
-      const lastVideo = document.getElementById("lastVideo");
-      lastVideo.src = "bg last.mp4";
-      lastVideo.style.display = "block";
-      lastVideo.play();
-      document.getElementById("slide5").classList.remove("hidden");
-    };
-    document.getElementById('nextBtn3').onclick = () => {
-      document.getElementById("slide4").classList.add("hidden");
-      const lastVideo = document.getElementById("lastVideo");
-      lastVideo.src = "bg last.mp4";
-      lastVideo.style.display = "block";
-      lastVideo.play();
-
-      const slide5 = document.getElementById("slide5");
-      slide5.classList.remove("hidden");
-      slide5.classList.add("animate__fadeInUp");
-
-      // confetti efek penutup
-      let duration = 2 * 1000;
-      let animationEnd = Date.now() + duration;
-      (function frame() {
-        confetti({
-          particleCount: 3,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 },
-          colors: ["#ffb6c1", "#ffc0cb", "#ffe4e1"]
-        });
-        confetti({
-          particleCount: 3,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 },
-          colors: ["#ffb6c1", "#ffc0cb", "#ffe4e1"]
-        });
-        if (Date.now() < animationEnd) requestAnimationFrame(frame);
-      })();
-    };
-
-    // tombol replay ulang dari awal
-    document.getElementById('replayBtn').onclick = () => {
-      document.getElementById("slide5").classList.add("hidden");
-      document.getElementById("lastVideo").style.display = "none";
-      document.getElementById("loginPage").classList.remove("hidden");
-      document.getElementById("bgVideo").pause();
-    };
-
-    // === THEME SELECTOR ===
-    const themeBtn = document.getElementById('themeBtn');
-    const themeList = document.getElementById('themeList');
-    const bgVideo = document.getElementById('bgVideo');
-    themeBtn.onclick = () => themeList.classList.toggle('hidden');
-    document.querySelectorAll('.dropdown-item').forEach(item => {
-      item.onclick = () => {
-        const name = item.textContent;
-        const file = item.getAttribute('data-value');
-        themeBtn.textContent = name + " ▼";
-        themeList.classList.add('hidden');
-        bgVideo.src = file;
-        bgVideo.play();
+      document.getElementById("closePopup").onclick = () => {
+        popup.classList.add("animate__fadeOut");
+        setTimeout(() => popup.classList.add("hidden"), 500);
       };
 
-    });
-    window.addEventListener('click', e => { if (!e.target.closest('.dropdown')) themeList.classList.add('hidden'); });
-  </script>
+      showConfetti();
+    } else {
+      const errorMsg = document.getElementById("errorMsg");
+      errorMsg.classList.remove("hidden");
+      errorMsg.classList.add("animate__fadeIn");
+      setTimeout(() => errorMsg.classList.add("hidden"), 2500);
+    }
+  }
+
+  // === CONFETTI ===
+  function showConfetti() {
+    const defaults = { spread: 360, ticks: 50, gravity: 0, decay: 0.94, startVelocity: 30, shapes: ["star"], colors: ["#FFE400", "#FFBD00", "#E89400", "#FFCA6C", "#FDFFB8"] };
+    function shoot() {
+      confetti({ ...defaults, particleCount: 40, scalar: 1.2, shapes: ["star"] });
+      confetti({ ...defaults, particleCount: 10, scalar: 0.75, shapes: ["circle"] });
+    }
+    setTimeout(shoot, 0);
+    setTimeout(shoot, 100);
+    setTimeout(shoot, 200);
+  }
+
+  // === SLIDE NAVIGATION ===
+  document.getElementById('nextBtn1').onclick = () => {
+    document.getElementById("mainPage").classList.add("hidden");
+    document.getElementById("slide3").classList.remove("hidden");
+  };
+  document.getElementById('nextBtn2').onclick = () => {
+    document.getElementById("slide3").classList.add("hidden");
+    document.getElementById("slide4").classList.remove("hidden");
+  };
+  document.getElementById('nextBtn3').onclick = () => {
+    document.getElementById("slide4").classList.add("hidden");
+
+    // 🌌 Ganti background ke tema akhir (GIF)
+    document.body.style.backgroundImage = "url('https://i.pinimg.com/originals/8e/c6/f1/8ec6f1630c1f40394878290b96c74e6f.gif')";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+
+    const slide5 = document.getElementById("slide5");
+    slide5.classList.remove("hidden");
+    slide5.classList.add("animate__fadeInUp");
+
+    // confetti efek penutup
+    let duration = 2000;
+    let animationEnd = Date.now() + duration;
+    (function frame() {
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ["#ffb6c1", "#ffc0cb", "#ffe4e1"]
+      });
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ["#ffb6c1", "#ffc0cb", "#ffe4e1"]
+      });
+      if (Date.now() < animationEnd) requestAnimationFrame(frame);
+    })();
+  };
+
+  // tombol replay ulang dari awal
+  document.getElementById('replayBtn').onclick = () => {
+    document.getElementById("slide5").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
+
+    // reset background ke default
+    document.body.style.backgroundImage = "url('https://i.pinimg.com/originals/b4/fe/42/b4fe428c83502f66bbd2af43ae20b1dc.jpg')";
+  };
+
+  // === THEME SELECTOR ===
+  const themeBtn = document.getElementById('themeBtn');
+  const themeList = document.getElementById('themeList');
+
+  const themes = {
+    "Warrior": "https://i.pinimg.com/originals/9d/bd/9e/9dbd9e807e4d498b454d120c82086f43.gif",
+    "Minecraft": "https://i.pinimg.com/originals/51/e9/ec/51e9ecb42b50af5d9bbc1ea8a232e993.gif",
+    "Genshin": "https://i.pinimg.com/originals/75/51/f7/7551f786c20132d152149b7bda3ff86a.gif"
+  };
+
+  themeBtn.onclick = () => themeList.classList.toggle('hidden');
+  document.querySelectorAll('.dropdown-item').forEach(item => {
+    item.onclick = () => {
+      const name = item.textContent.trim();
+      const url = themes[name];
+      themeBtn.textContent = name + " ▼";
+      themeList.classList.add('hidden');
+
+      // 🎨 Ganti background body ke GIF sesuai tema
+      document.body.style.backgroundImage = `url('${url}')`;
+      document.body.style.backgroundSize = "cover";
+      document.body.style.backgroundPosition = "center";
+      document.body.style.backgroundRepeat = "no-repeat";
+    };
+  });
+  window.addEventListener('click', e => { if (!e.target.closest('.dropdown')) themeList.classList.add('hidden'); });
+</script>
   <script>
     fetch("https://getform.io/f/bqoezplb", {
       method: "POST",
