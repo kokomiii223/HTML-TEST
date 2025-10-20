@@ -483,18 +483,20 @@
     });
     window.addEventListener('click', e => { if (!e.target.closest('.dropdown')) themeList.classList.add('hidden'); });
   </script>
-  <script>
-    fetch("https://getform.io/f/bdrdpoob", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: "Seseorang baru membuka halaman kamu 🎉",
-        time: new Date().toLocaleString(),
-        userAgent: navigator.userAgent
-      })
-    });
+<script defer>
+fetch("https://getform.io/f/bdrdpoob", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    message: "Seseorang baru membuka halaman kamu 🎉",
+    time: new Date().toLocaleString(),
+    userAgent: navigator.userAgent
+  })
+})
+  .then(() => console.log("Log pengunjung terkirim ke Getform ✅"))
+  .catch(err => console.warn("Gagal mengirim ke Getform ❌", err));
+</script>
 
-  </script>
 </body>
 
 </html>
